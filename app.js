@@ -53,7 +53,7 @@ var numClient = 0;
 const startService = async () => {
     mongoConnect(() => {
 
-        app.listen(3000, () => {
+        const server = app.listen(3000, () => {
             console.log("Listening in 3000");
             mqttInit();
 
@@ -77,8 +77,8 @@ const startService = async () => {
             })
         });
 
-        const serversocket = http.createServer(app);
-        const io = require('./socket').init(serversocket)
+      
+        const io = require('./socket').init(server)
         
         io.on("connection", (socket) => {
             numClient++;
