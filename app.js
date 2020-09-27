@@ -7,7 +7,7 @@ const app = express();
 const http = require("http");
 
 
-const serversocket = http.createServer(app);
+
 
 const mongoConnect = require("./utils/database").mongoConnect;
 
@@ -47,6 +47,8 @@ app.use((error, req, res, next) => {
     });
 });
 var numClient = 0;
+
+const serversocket = http.createServer(app);
 const io = require('./socket').init(serversocket)
 
 io.on("connection", (socket) => {
