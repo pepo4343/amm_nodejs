@@ -41,11 +41,11 @@ app.use(bodyParser.urlencoded({ extended: true })); //application/x-www-form-url
 
 app.use("/user", userRoutes);
 
-const accessLogStream = fs.createWriteStream(path.join(__dirname,"access.log"),{flags: 'a'}) 
+// const accessLogStream = fs.createWriteStream(path.join(__dirname,"access.log"),{flags: 'a'}) 
 
 // app.use(helmet());
-app.use(compression());
-app.use(morgan('combined',{stream:accessLogStream}))
+// app.use(compression());
+// app.use(morgan('combined',{stream:accessLogStream}))
 
   
 // error handler
