@@ -8,7 +8,13 @@ const http = require("http");
 
 const path = require("path");
 
+const morgan =require("morgan")
 
+const fs =require('fs')
+
+
+const helmet = require("helmet");
+const compression = require("compression");
 
 const mongoConnect = require("./utils/database").mongoConnect;
 
@@ -35,13 +41,12 @@ app.use(bodyParser.urlencoded({ extended: true })); //application/x-www-form-url
 
 app.use("/user", userRoutes);
 
-app.use(express.static(path.join(__dirname, "build")));
+const accessLogStream = fs.createWriteStream(path.join(__dirname,access.log),{flags: 'a'}) 
 
+app.use(helmet());
+app.use(compression());
+app.use(morgan('combined',{stream:accessLogStream}))
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'))
-  })
-  
   
 // error handler
 app.use((error, req, res, next) => {
