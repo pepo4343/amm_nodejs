@@ -6,6 +6,7 @@ const app = express();
 
 const http = require("http");
 
+const path = require("path");
 
 
 
@@ -33,6 +34,15 @@ app.use(bodyParser.urlencoded({ extended: true })); //application/x-www-form-url
 
 
 app.use("/user", userRoutes);
+
+app.use(express.static(path.join(__dirname, "build")));
+
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'))
+  })
+  
+  
 // error handler
 app.use((error, req, res, next) => {
     const status = error.statusCode || 500;
