@@ -2,15 +2,15 @@ version: '3'
 services:
     nodejs:
         build: .
+        restart: unless-stopped
         container_name: fit_amm_node
-        ports:
-            - 3000:3000
         volumes:
             - /app/node_modules
             - .:/app
 
     mongo:
       image: mongo:latest
+      restart: unless-stopped
       container_name: fit_amm_mongo
       volumes:
         - mongodb_data_container:/data/db
