@@ -48,24 +48,12 @@ app.use((error, req, res, next) => {
 });
 var numClient = 0;
 
-const serversocket = http.createServer(app);
-const io = require('./socket').init(serversocket)
-
-io.on("connection", (socket) => {
-    numClient++;
-    io.emit("numclient", { numClient });
-    console.log("Client Connected :", numClient);
-    socket.on("disconnect", () => {
-        numClient--;
-        console.log("Client Disconnected : ", numClient);
-    });
-});
 
 
 const startService = async () => {
     mongoConnect(() => {
 
-        serversocket.listen(3000, () => {
+        app.listen(3000, () => {
             console.log("Listening in 3000");
             mqttInit();
 
@@ -88,6 +76,20 @@ const startService = async () => {
                 io.emit(device_alias + "_" + type, { message:message.toString() })
             })
         });
+
+        const serversocket = http.createServer(app);
+        const io = require('./socket').init(serversocket)
+        
+        io.on("connection", (socket) => {
+            numClient++;
+            io.emit("numclient", { numClient });
+            console.log("Client Connected :", numClient);
+            socket.on("disconnect", () => {
+                numClient--;
+                console.log("Client Disconnected : ", numClient);
+            });
+        });
+         
     });
 };
 
